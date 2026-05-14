@@ -7,6 +7,8 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/guards/auth.guard';
 import configuration from './config/configuration';
 import { RolesGuard } from './common/guards/roles.guard';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import path from 'path';
 
 @Module({
   imports: [
@@ -15,6 +17,10 @@ import { RolesGuard } from './common/guards/roles.guard';
       load: [configuration],
     }),
     MongooseModule.forRoot(process.env.MONGO_URL as string),
+    ServeStaticModule.forRoot({
+      serveRoot: '/uploads',
+      rootPath: path.join(process.cwd(), 'uploads'),
+    }),
     AuthModule,
     UsersModule,
   ],
